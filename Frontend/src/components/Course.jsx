@@ -1,10 +1,20 @@
-import React from 'react'
-import book_list from '../../public/booklist.json'
+import React, { useEffect, useState } from 'react'
 import Card from './Card';
 import {Link} from 'react-router-dom'
 
-
 const Course = () => {
+  const [books, setBooks] = useState([]);
+
+  useEffect(() =>{
+    const getBook = async () => {
+       await fetch('https://bookstore-mahadi.onrender.com/book')
+      .then(res => res.json())
+      .then(data => setBooks(data))
+      .catch(err => console.error(err))
+      
+    }
+    getBook();
+  },[])
   return (
     <div className='max-w-screen-2xl container md:px-20 px-4 pt-28'>
       <div className=' text-center space-y-4'>
@@ -14,7 +24,7 @@ const Course = () => {
       </div>
       <div className='mt-12 grid grid-cols-1 md:grid-cols-3'>
         {
-          book_list.map(book => <Card key={book.id} book={book} />)
+          books.map(book => <Card key={book.id} book={book} />)
         }
       </div>
     </div>

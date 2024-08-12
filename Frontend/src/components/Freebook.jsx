@@ -1,13 +1,25 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import Slider from "react-slick";
 
-import book_list from '../../public/booklist.json'
 import Card from './Card';
 
 const Freebook = () => {
-    const freeBook = book_list.filter(book => book.price === 0);
+    const [books, setBooks] = useState([]);
+
+    useEffect(() => {
+        const getBook = async () => {
+            await fetch('https://bookstore-mahadi.onrender.com/book')
+                .then(res => res.json())
+                .then(data => setBooks(data))
+                .catch(err => console.error(err))
+
+        }
+        getBook();
+    }, [])
+
+    const freeBook = books.filter(book => book.price === 0);
     console.log(freeBook.length);
 
     var settings = {
